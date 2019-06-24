@@ -3,5 +3,3 @@
 // require('./build/tests/test-2')
 // require('./build/tests/test-3')
 // require('./build/tests/test-4')
-// require('./build/tests/test-5')
-// require('./build/tests/test-6')

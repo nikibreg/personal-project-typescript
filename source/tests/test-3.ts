@@ -42,7 +42,7 @@ const scenario: Step[] = [
     }
 ];
 
-const transaction = new Transaction();
+const transaction = new Transaction.Transaction();
 (async () => {
     try {
         await transaction.dispatch(scenario);

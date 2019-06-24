@@ -1,40 +1,41 @@
-console.log(`// This is the case when we're missing 
-// a required field in any of the scenario steps
-//  (either an index or meta)
-// It is expected to be invalid`)
+console.log(`// This is the case when we 
+// come across duplicate indexes `)
 import { Transaction } from '../transaction'
-import { Step } from '../transaction/lib';
+import { Step, Store } from '../transaction/lib';
 
 const scenario: Step[] = [
-    // {
-
-    //     meta: {
-    //         title: 'valid action with restore',
-    //         description: 'call() increases count by 1, restore decreases count by 3'
-    //     },
-    //     call: async (store) => {
-    //         store.count += 1
-    //     },
-    //     restore: async (store) => {
-    //         store.count -=3
-    //         console.log('store after last restore():', store)
-    //      }
-    // },
-    // {
-    //     meta: {
-    //         title: 'valid action with restore',
-    //         description: 'call() increases count by 1, restore decreases count by 3'
-    //     },
-    //     call: async (store) => {
-    //         store.count += 1
-    //     },
-    //     restore: async (store) => {
-    //         store.count -=3
-    //      }
-    // }
+    {
+        index: 1,
+        meta: {
+            title: 'valid action with restore',
+            description: 'call() increases count by 1, restore decreases count by 3'
+        },
+        call: async (store: Store) => {
+            store.count += 1
+        },
+        restore: async (store: Store) => {
+            store.count -= 3
+            console.log('store after last restore():', store)
+        }
+    },
+    {
+        index: 1,
+        meta: {
+            title: 'valid action with restore',
+            description: 'call() increases count by 1, restore decreases count by 3'
+        },
+        call: async (store: Store) => {
+            store.count += 1
+        },
+        restore: async (store: Store) => {
+            store.count -= 3
+        }
+        // Notice how we don't reach the error about
+        // the last step having a restore function
+    }
 ];
 
-const transaction = new Transaction();
+const transaction = new Transaction.Transaction();
 (async () => {
     try {
         await transaction.dispatch(scenario);

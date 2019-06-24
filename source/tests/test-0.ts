@@ -1,7 +1,3 @@
-console.log(`// This is a case when we have an invalid 
-// type for a property
-`)
-
 import { Transaction } from '../transaction'
 import { Store, Step } from '../transaction/lib';
 
@@ -9,21 +5,42 @@ const scenario: Step[] = [
     {
         index: 1,
         meta: {
-            title: 'Increment count',
-            description: 'This action is expected to be valid'
+            title: 'valid action with restore',
+            description: 'call() increases count by 1, restore decreases count by 3'
         },
         call: async (store:Store) => {
             store.count += 1
         },
-        restore: async () => { }
-        // Notice, how we don't reach error 
-        // about last step having restore()
+        restore: async (store:Store) => {
+            store.count -=3
+            console.log('store after last restore():', store)
+        },
+        silent: true
+    },
+    {
+        index: 2,
+        meta: {
+            title: 'valid action without restore',
+            description: 'it doesn\'t have restore()'
+        },
+        call: async (store: Store) => {
+            store.count += 1
+        },
+    },
+    {
+        index: 3,
+        meta: {
+            title: 'Increment count, expected to throws an error',
+            description: 'Expected to be valid last step without restore()'
+        },
+        call: async (store: Store) => {
+            store.count += 1
+            throw new Error()
+        },
     }
 ];
 
-const transaction = new Transaction();
-
-
+const transaction = new Transaction.Transaction();
 (async () => {
     try {
         await transaction.dispatch(scenario);

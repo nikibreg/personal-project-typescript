@@ -1,5 +1,4 @@
-// This is a valid example test case
-console.log(`// This is a valid example test case`)
+console.log(`/////////////// This is a valid example test case`)
 import { Transaction } from '../transaction'
 import { Store, Step } from '../transaction/lib';
 
@@ -27,7 +26,7 @@ const scenario: Step[] = [
     }
 ];
 
-const transaction = new Transaction();
+const transaction = new Transaction.Transaction();
 
 
 (async () => {
