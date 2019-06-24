@@ -11,13 +11,13 @@ const scenario: Step[] = [
             title: 'valid action with restore',
             description: 'call() increases count by 1, restore decreases count by 3'
         },
-        call: async (store:Store) => {
+        call: async (store: Store) => {
             store.count += 1
         },
-        restore: async (store:Store) => {
-            store.count -=3
+        restore: async (store: Store) => {
+            store.count -= 3
             console.log('store after last restore():', store)
-         }
+        }
     },
     {
         index: 2,

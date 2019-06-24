@@ -2,6 +2,7 @@ import { Step, Store, Log } from './lib';
 
 
 export namespace Transaction {
+    // Validates scenario
     const validScenario = function (target: any, propertyKey: string, descriptor: PropertyDescriptor): void {
         let createScenario = descriptor.value;
         descriptor.value = function () {
@@ -62,7 +63,6 @@ export namespace Transaction {
             for (let i = scenario.length - 1; i >= 0; --i) {
                 let step = scenario[i]
                 if (step.restore) {
-
                     await step.restore(this.store)
                 }
             }
@@ -74,7 +74,6 @@ export namespace Transaction {
             let step = { ...STEP }
             delete step.call
             delete step.restore
-
             if (!errored) {
                 this.logs.push({ ...step, storeBefore, storeAfter, error })
             } else {
@@ -88,6 +87,5 @@ export namespace Transaction {
                 })
             }
         }
-
     }
 }

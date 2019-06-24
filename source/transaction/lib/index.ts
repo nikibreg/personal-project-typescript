@@ -1,14 +1,14 @@
-export interface Store extends Object{
-    [property:string]: any
+export interface Store extends Object {
+    [property: string]: any
 };
 
 export interface Step {
     index: number,
-    meta: { 
+    meta: {
         title: string,
         description: string
     },
-    call: (store:Store) => any,
+    call: (store: Store) => any,
     restore?: (store: Store) => any,
     silent?: boolean
 }

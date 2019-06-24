@@ -9,7 +9,7 @@ const scenario: Step[] = [
             title: 'Increment count',
             description: 'This action is expected to be valid'
         },
-        call: async (store:Store) => {
+        call: async (store: Store) => {
             store.count += 1
         },
         restore: async () => { }
@@ -20,7 +20,7 @@ const scenario: Step[] = [
             title: 'Increment count',
             description: 'This action is expected to be valid'
         },
-        call: async (store:Store) => {
+        call: async (store: Store) => {
             store.count += 1
         },
     }
