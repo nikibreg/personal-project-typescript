@@ -3,15 +3,16 @@ console.log(`// This is a case when we have an invalid
 `)
 
 import { Transaction } from '../transaction'
+import { Store, Step } from '../transaction/lib';
 
-const scenario = [
+const scenario: Step[] = [
     {
-        index: '1',
+        index: 1,
         meta: {
             title: 'Increment count',
             description: 'This action is expected to be valid'
         },
-        call: async (store) => {
+        call: async (store:Store) => {
             store.count += 1
         },
         restore: async () => { }

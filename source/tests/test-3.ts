@@ -2,18 +2,19 @@ console.log(`// This is the case when we skip restore() during rollback
 // if restore method 
 // in any of the steps is not present`)
 import { Transaction } from '../transaction'
+import { Store, Step } from '../transaction/lib';
 
-const scenario = [
+const scenario: Step[] = [
     {
         index: 1,
         meta: {
             title: 'valid action with restore',
             description: 'call() increases count by 1, restore decreases count by 3'
         },
-        call: async (store) => {
+        call: async (store:Store) => {
             store.count += 1
         },
-        restore: async (store) => {
+        restore: async (store:Store) => {
             store.count -=3
             console.log('store after last restore():', store)
          }

@@ -1,71 +1,23 @@
-import { Validator } from '../validator'
+import { Step, Store, Log } from './lib';
 export class Transaction {
+    store: Object | null;
+    logs: Array<Log>
     constructor() {
         this.logs = []
         // We need store to be initialized
         // with a count property (a number)
         // for our tests to work
-        this.store = {count: 1}
         // (It's arbitrary, doesn't break anything but tests)
-        this.schema = {
-            index: {
-                type: 'number'
-            },
-            meta: {
-                title: {
-                    type: 'string'
-                },
-                description: {
-                    type: 'string'
-                }
-            },
-            call: {
-                type: 'function'
-            },
-            restore: {
-                type: 'function',
-                optional: true
-            },
-            silent: {
-                type: 'boolean',
-                optional: true
-            }
-        }
+        this.store = { count: 1 }
     }
 
-    // validation against multiple requirements for a list of steps 
-    validSteps(...steps){
-        // validate individual steps
-        for (let step of steps) {
-            let isValid = Validator.validate(step, this.schema)
-            let isObject = (typeof step == "object")
-            let isMetaValid = step.meta && step.meta.title && step.meta.description
-            if (!isValid || !(!!isObject && !!step.index && !!step.call && isMetaValid)){
-                throw new Error("Invalid Step!!!")
-            }
-            if (step.silent){
-                delete step.restore
-            }
-        }
-        // check for duplicate indexes
-        let indexes = steps.map(step=>step.index)
-        if ((new Set(indexes)).size != indexes.length){
-            throw new Error("Duplicate step indexes aren't allowed!")
-        }
-        // check if last step has a redundant restore()
-            if (steps[steps.length-1].restore){
-            throw new Error("Last step shouldn't have a restore function!")
-        }
-        return steps
-    }
-
-    createScenario(...steps) {
-        let scenario = this.validSteps(...steps)  
+    createScenario(...steps: Step[]) {
+        let scenario = steps;
         // Step order according to their index
-        return scenario.sort((a, b) => a.index - b.index)
+        return scenario.sort((a: Step, b: Step) => a.index - b.index)
     }
 
-    async dispatch(scenario) {
+    async dispatch(scenario: Step[]) {
         scenario = this.createScenario(...scenario)
         for (let i = 0; i < scenario.length; i++) {
             let step = scenario[i]
@@ -79,22 +31,22 @@ export class Transaction {
                 this.updateLogs(step, error)
             }
         }
-    }   
+    }
 
-    async rollback(scenario){
-        for (let i = scenario.length - 1; i >= 0; --i){
+    async rollback(scenario: Step[]) {
+        for (let i = scenario.length - 1; i >= 0; --i) {
             let step = scenario[i]
-            if(step.restore){
+            if (step.restore) {
 
                 await step.restore(this.store)
             }
         }
         this.store = null
-    }   
+    }
 
-    updateLogs(STEP, error, storeBefore, storeAfter) {
+    updateLogs(STEP: Step, error?: Error, storeBefore?: Store, storeAfter?: Store) {
         let errored = !(storeBefore && storeAfter)
-        let step = {...STEP}
+        let step = { ...STEP }
         delete step.call
         delete step.restore
         

@@ -1,15 +1,16 @@
 // This is a valid example test case
 console.log(`// This is a valid example test case`)
 import { Transaction } from '../transaction'
+import { Store, Step } from '../transaction/lib';
 
-const scenario = [
+const scenario: Step[] = [
     {
         index: 1,
         meta: {
             title: 'Increment count',
             description: 'This action is expected to be valid'
         },
-        call: async (store) => {
+        call: async (store:Store) => {
             store.count += 1
         },
         restore: async () => { }
@@ -20,7 +21,7 @@ const scenario = [
             title: 'Increment count',
             description: 'This action is expected to be valid'
         },
-        call: async (store) => {
+        call: async (store:Store) => {
             store.count += 1
         },
     }

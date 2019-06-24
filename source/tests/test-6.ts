@@ -1,16 +1,17 @@
 import { Transaction } from '../transaction'
+import { Store, Step } from '../transaction/lib';
 
-const scenario = [
+const scenario: Step[] = [
     {
         index: 1,
         meta: {
             title: 'valid action with restore',
             description: 'call() increases count by 1, restore decreases count by 3'
         },
-        call: async (store) => {
+        call: async (store:Store) => {
             store.count += 1
         },
-        restore: async (store) => {
+        restore: async (store:Store) => {
             store.count -=3
             console.log('store after last restore():', store)
         },
@@ -22,7 +23,7 @@ const scenario = [
             title: 'valid action without restore',
             description: 'it doesn\'t have restore()'
         },
-        call: async (store) => {
+        call: async (store: Store) => {
             store.count += 1
         },
     },
@@ -32,7 +33,7 @@ const scenario = [
             title: 'Increment count, expected to throws an error',
             description: 'Expected to be valid last step without restore()'
         },
-        call: async (store) => {
+        call: async (store: Store) => {
             store.count += 1
             throw new Error()
         },

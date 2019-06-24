@@ -1,8 +1,9 @@
 console.log(`// This is a test case when we throw an error
 // if we see a restore() on the last step`)
 import { Transaction } from '../transaction'
+import { Store, Step } from '../transaction/lib';
 
-const scenario = [
+const scenario: Step[] = [
     {
         index: 1,
         meta: {
@@ -20,7 +21,7 @@ const scenario = [
             title: 'Increment count',
             description: 'This action is expected to be valid'
         },
-        call: async (store) => {
+        call: async (store: Store) => {
             store.count += 1
         },
         restore: async () => { }
@@ -31,7 +32,7 @@ const scenario = [
             title: 'Increment count',
             description: 'This action is expected to be invalid, since it\'s the last step and has restore()'
         },
-        call: async (store) => {
+        call: async (store: Store) => {
             store.count += 1
         },
         restore: async () => { }
