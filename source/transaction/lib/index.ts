@@ -1,4 +1,4 @@
-export interface Store extends Object {
+export interface Store {
     [property: string]: any
 };
 
