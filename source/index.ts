@@ -1,32 +1,31 @@
-import { Transaction } from './transaction'
-import { Store, Step } from './transaction/lib';
+import { Transaction } from "./transaction";
+import { Step, Store } from "./transaction/lib";
 
 const scenario: Step[] = [
     {
+        call: async (store: Store) => {
+            store.count += 1;
+        },
         index: 1,
         meta: {
-            title: 'Increment count',
-            description: 'This action is expected to be valid'
+            description: "This action is expected to be valid",
+            title: "Increment count",
         },
-        call: async (store: Store) => {
-            store.count += 1
-        },
-        restore: async () => { }
-    }
+        restore: async () => {/**/},
+    },
 ];
 
-const transaction = new Transaction.Transaction();
-
+const transaction = new Transaction();
 
 (async () => {
     try {
         await transaction.dispatch(scenario);
         const store = transaction.store; // {} | null
         const logs = transaction.logs; // []
-        console.log('LOGS:', logs)
-        console.log('STORE:', store)
+        console.log("LOGS:", logs);
+        console.log("STORE:", store);
     } catch (err) {
         // Send email about broken transaction
-        console.log(err)
+        console.log(err);
     }
 })();

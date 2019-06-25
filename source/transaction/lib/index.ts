@@ -1,21 +1,21 @@
 export interface Store {
-    [property: string]: any
-};
+    [property: string]: number;
+}
 
 export interface Step {
-    index: number,
+    index: number;
     meta: {
-        title: string,
-        description: string
-    },
-    call: (store: Store) => any,
-    restore?: (store: Store) => any,
-    silent?: boolean
+        title: string;
+        description: string;
+    };
+    restore?: (store: Store | null) => void;
+    silent?: boolean;
+    call(store: Store | null): void;
 }
 
 export interface Log extends Step {
     // ...step: Step,
-    error: Error,
-    storeBefore?: Store,
-    storeAfter?: Store
+    error: Error | null;
+    storeBefore?: Store | null;
+    storeAfter?: Store | null;
 }
